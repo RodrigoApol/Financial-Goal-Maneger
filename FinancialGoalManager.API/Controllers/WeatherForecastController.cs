@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace FinancialGoalManeger.API.Controllers;
+namespace FinancialGoalManager.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]

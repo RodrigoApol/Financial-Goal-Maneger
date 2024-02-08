@@ -1,4 +1,4 @@
-namespace FinancialGoalManeger.API;
+namespace FinancialGoalManager.API;
 
 public class WeatherForecast
 {
