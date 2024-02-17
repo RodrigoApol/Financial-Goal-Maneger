@@ -1,4 +1,6 @@
+using FiancialGoalManeger.Core.Repositories;
 using FinancialGoalManager.Infrastructure.Persistence;
+using FinancialGoalManager.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -8,7 +10,9 @@ public static class InfrastructureConfiguration
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
-        services.AddContext();
+        services
+            .AddContext()
+            .AddRepositories();
 
         return services;
     }
@@ -19,5 +23,13 @@ public static class InfrastructureConfiguration
             o => o.UseInMemoryDatabase("FinancialGoalManager"));
 
         return services;
+    }
+
+    private static IServiceCollection AddRepositories(this IServiceCollection service)
+    {
+        service.AddScoped<IFinancialGoalRepository, FinancialGoalRepository>();
+        service.AddScoped<IFinancialGoalTransactionRepository, FinancialGoalTransactionRepository>();
+
+        return service;
     }
 }
