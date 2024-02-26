@@ -1,3 +1,4 @@
+using FinancialGoalManager.Application.Models.InputModels;
 using FinancialGoalManager.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,16 +18,23 @@ public class TransactionController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var transactions = await _service.GetAll();
+        try
+        {
+            var transactions = await _service.GetAll();
 
-        return Ok(transactions);
+            return Ok(transactions);
+        }
+        catch 
+        {
+            return BadRequest();
+        }
     }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(Guid id)
+    [HttpPost]
+    public async Task<IActionResult> Post(Guid id, FinancialGoalTransactionInputModel inputModel)
     {
-        var transaction = await _service.GetById(id);
+        await _service.CreateTransaction(id, inputModel);
 
-        return Ok(transaction);
+        return Created();
     }
  }

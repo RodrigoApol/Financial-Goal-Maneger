@@ -12,10 +12,6 @@ public class FinancialGoalTransaction : BaseEntity
         Amount = amount;
         TransactionType = transactionType;
         TransactionDate = DateTime.Now;
-
-        Id = new Guid();
-        CreateAt = DateTime.Now;
-        IsDeleted = false;
     }
 
     public decimal Amount { get; private set; }

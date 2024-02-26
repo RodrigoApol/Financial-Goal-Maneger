@@ -5,6 +5,6 @@ namespace FiancialGoalManeger.Core.Repositories;
 public interface IFinancialGoalTransactionRepository
 {
     Task<List<FinancialGoalTransaction>> GetAllAsync();
-    Task<FinancialGoalTransaction?> GetByIdAsync(Guid id);
+    Task AddAsync(FinancialGoalTransaction transaction);
     Task SaveChangesAsync();
 }

@@ -18,13 +18,10 @@ public class FinancialGoalTransactionRepository : IFinancialGoalTransactionRepos
         return await _dbContext.Transactions.ToListAsync();
     }
 
-    public async Task<FinancialGoalTransaction?> GetByIdAsync(Guid id)
+    public async Task AddAsync(FinancialGoalTransaction transaction)
     {
-        var transaction = await _dbContext
-            .Transactions
-            .SingleOrDefaultAsync(t => t.Id == id);
-
-        return transaction;
+        await _dbContext.Transactions.AddAsync(transaction);
+        await _dbContext.SaveChangesAsync();
     }
 
     public async Task SaveChangesAsync()

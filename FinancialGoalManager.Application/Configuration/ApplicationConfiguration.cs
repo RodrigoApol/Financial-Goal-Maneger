@@ -12,6 +12,7 @@ public static class ApplicationConfiguration
 
         return service;
     }
+    
     private static IServiceCollection AddServices(this IServiceCollection service)
     {
         service.AddScoped<IFinancialGoalService, FinancialGoalService>();

@@ -12,12 +12,6 @@ public static class MappingTransactionViewModel
             new FinancialGoalTransactionViewModel(
                 t.Amount,
                 t.TransactionDate.ToString("dd/MM/yyyy"),
-                t.TransactionType)).ToList();
+                t.TransactionType.ToString())).ToList();
     }
-
-    public static FinancialGoalTransactionViewModel ToViewModelWithId(this FinancialGoalTransaction transaction) =>
-        new FinancialGoalTransactionViewModel(
-            transaction.Amount,
-            transaction.TransactionDate.ToString("dd/MM/yyyy"),
-            transaction.TransactionType);
 }

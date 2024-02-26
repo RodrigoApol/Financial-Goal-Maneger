@@ -13,11 +13,8 @@ public class FinancialGoal : BaseEntity
         GoalAmount = goalAmount;
         Deadline = deadline ?? null;
         Status = EFinancialGoalStatus.InProgress;
-
         Amount = 0;
-        Id = new Guid();
-        CreateAt = DateTime.Now;
-        IsDeleted = false;
+        Transactions = new List<FinancialGoalTransaction>();
     }
 
     public string Name { get; private set; }
@@ -46,9 +43,23 @@ public class FinancialGoal : BaseEntity
 
         var value = goalAmount / monthUntilDeadline;
 
-        IdealMonthlySaving = value;
+        IdealMonthlySaving = Math.Round(value, 2);
 
         return IdealMonthlySaving ?? 0;
+    }
+
+    public decimal IsDeposit(decimal amount)
+    {
+        var value = Amount += amount;
+
+        return Math.Round(value, 2);
+    }
+
+    public decimal IsWithdraw(decimal amount)
+    {
+        var value = Amount -= amount;
+
+        return value <= 0 ? 0 : Math.Round(value, 2);
     }
 
     public void FinancialGoalCompleted()

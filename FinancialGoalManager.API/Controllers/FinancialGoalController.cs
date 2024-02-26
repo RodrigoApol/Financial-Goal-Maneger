@@ -24,7 +24,7 @@ public class FinancialGoalController : ControllerBase
         return Ok(financialsGoals);
     }
 
-    [HttpGet("{Id}")]
+    [HttpGet("{id}")]
     public async Task<IActionResult> GetById(Guid id)
     {
         var financialGoal = await _service.GetById(id);
@@ -32,7 +32,7 @@ public class FinancialGoalController : ControllerBase
         return Ok(financialGoal);
     }
     
-    [HttpGet("idealMonthlySaving/{Id}")]
+    [HttpGet("idealMonthlySaving/{id}")]
     public async Task<IActionResult> GetIdealMonthlySavingValue(Guid id)
     {
         var value = await _service.GetIdealMonthlySaving(id);

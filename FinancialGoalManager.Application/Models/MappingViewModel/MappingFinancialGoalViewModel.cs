@@ -17,8 +17,8 @@ public static class MappingFinancialGoalViewModel
             financialGoal.Name,
             financialGoal.GoalAmount,
             financialGoal.Amount,
-            financialGoal.Deadline.ToString(),
+            financialGoal.Deadline?.ToString("dd/MM/yyyy"),
             financialGoal.IdealMonthlySaving,
-            financialGoal.Status,
+            financialGoal.Status.ToString(),
             financialGoal.Transactions.ToViewModel());
 }
