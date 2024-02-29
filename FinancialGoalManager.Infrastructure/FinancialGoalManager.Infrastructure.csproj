@@ -8,6 +8,8 @@
 
     <ItemGroup>
       <Compile Remove="Class1.cs" />
+      <Compile Remove="FinancialGoalManager\**" />
+      <Compile Remove="FinancialGoalManager.Infrastructure\**" />
     </ItemGroup>
 
     <ItemGroup>
@@ -16,10 +18,21 @@
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
       <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.1" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.1" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\FinancialGoalManager.Core\FinancialGoalManager.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="FinancialGoalManager\**" />
+      <EmbeddedResource Remove="FinancialGoalManager.Infrastructure\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="FinancialGoalManager\**" />
+      <None Remove="FinancialGoalManager.Infrastructure\**" />
     </ItemGroup>
 
 </Project>

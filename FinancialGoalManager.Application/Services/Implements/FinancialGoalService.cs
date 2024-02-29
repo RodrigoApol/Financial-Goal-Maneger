@@ -16,7 +16,7 @@ public class FinancialGoalService : IFinancialGoalService
     {
         _repository = repository;
     }
-    
+
     public async Task<List<FinancialGoalViewModel>> GetAll()
     {
         var financialsGoals = await _repository.GetAllAsync();
@@ -24,16 +24,16 @@ public class FinancialGoalService : IFinancialGoalService
         return financialsGoals.ToViewModel();
     }
 
-    public async Task<FinancialGoalDetailsViewModel> GetById(Guid id)
+    public async Task<FinancialGoalDetailsViewModel?> GetById(Guid id)
     {
         var financialGoal = await _repository.GetByIdAsync(id);
-        
-        if (financialGoal is null)
-        {
-            throw new FinancialGoalNotFoundException();
-        }
 
-        return financialGoal.ToViwModelWithId();
+        // if (financialGoal is null)
+        // {
+        // throw new FinancialGoalNotFoundException();
+        // }
+
+        return financialGoal?.ToViwModelWithId();
     }
 
     public async Task<decimal> GetIdealMonthlySaving(Guid id)
@@ -44,7 +44,7 @@ public class FinancialGoalService : IFinancialGoalService
         {
             throw new FinancialGoalNotFoundException();
         }
-        
+
         var value = financialGoal.IdealMonthlySavingCalc();
 
         return value;
@@ -53,13 +53,13 @@ public class FinancialGoalService : IFinancialGoalService
     public async Task<Guid> CreateFinancialGoal(FinancialGoalInputModel financialGoalInput)
     {
         var financialGoal = new FinancialGoal(
-            financialGoalInput.Name, 
+            financialGoalInput.Name,
             financialGoalInput.GoalAmount,
             financialGoalInput.Deadline);
-        
+
         await _repository.AddAsync(financialGoal);
         await _repository.SaveChangesAsync();
-        
+
         return financialGoal.Id;
     }
 
@@ -71,7 +71,7 @@ public class FinancialGoalService : IFinancialGoalService
         {
             throw new FinancialGoalNotFoundException();
         }
-        
+
         financialGoal.UpdateFinancialGoal(financialGoalInput.Name, financialGoalInput.GoalAmount);
 
         await _repository.SaveChangesAsync();
@@ -80,12 +80,12 @@ public class FinancialGoalService : IFinancialGoalService
     public async Task DeleteFinancialGoal(Guid id)
     {
         var financialGoal = await _repository.GetByIdAsync(id);
-        
+
         if (financialGoal is null)
         {
             throw new FinancialGoalNotFoundException();
         }
-        
+
         financialGoal.DeleteFinancialGoal();
 
         await _repository.SaveChangesAsync();
@@ -94,12 +94,12 @@ public class FinancialGoalService : IFinancialGoalService
     public async Task Paused(Guid id)
     {
         var financialGoal = await _repository.GetByIdAsync(id);
-        
+
         if (financialGoal is null)
         {
             throw new FinancialGoalNotFoundException();
         }
-        
+
         financialGoal.FinancialGoalPaused();
 
         await _repository.SaveChangesAsync();
@@ -108,12 +108,12 @@ public class FinancialGoalService : IFinancialGoalService
     public async Task Canceled(Guid id)
     {
         var financialGoal = await _repository.GetByIdAsync(id);
-        
+
         if (financialGoal is null)
         {
             throw new FinancialGoalNotFoundException();
         }
-        
+
         financialGoal.FinancialGoalCanceled();
 
         await _repository.SaveChangesAsync();

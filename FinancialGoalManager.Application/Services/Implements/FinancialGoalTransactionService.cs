@@ -35,23 +35,33 @@ public class FinancialGoalTransactionService : IFinancialGoalTransactionService
         {
             throw new FinancialGoalNotFoundException();
         }
-        
-        var transaction = new FinancialGoalTransaction(
-            inputModel.Amount,
-            inputModel.TransactionType);
 
-        switch (transaction.TransactionType)
+        if (financialGoal.Status == EFinancialGoalStatus.InProgress)
         {
-            case ETransactionType.Deposit:
-                financialGoal.IsDeposit(transaction.Amount);
-                financialGoal.FinancialGoalCompleted();
-                break;
-            case ETransactionType.Withdraw:
-                financialGoal.IsWithdraw(transaction.Amount);
-                break;
-            default: throw new ArgumentException("Error");
+            var transaction = new FinancialGoalTransaction(
+                inputModel.Amount,
+                inputModel.TransactionType);
+            
+            switch (transaction.TransactionType)
+            {
+                case ETransactionType.Deposit:
+                    financialGoal.IsDeposit(transaction.Amount);
+                    financialGoal.FinancialGoalCompleted();
+                    break;
+                case ETransactionType.Withdraw:
+                    financialGoal.IsWithdraw(transaction.Amount);
+                    break;
+                default: throw new ArgumentException("Error");
+            }
+            
+            await _repository.AddAsync(transaction);
         }
 
-        await _repository.AddAsync(transaction);
+        if (financialGoal.Status is EFinancialGoalStatus.Canceled or EFinancialGoalStatus.Paused
+            or EFinancialGoalStatus.Completed)
+        {
+            throw new ArgumentException("Transaction not valid");
+        }
+        
     }
 }

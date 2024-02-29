@@ -15,7 +15,10 @@ public class FinancialGoalTransactionRepository : IFinancialGoalTransactionRepos
     
     public async Task<List<FinancialGoalTransaction>> GetAllAsync()
     {
-        return await _dbContext.Transactions.ToListAsync();
+        return await _dbContext
+            .Transactions
+            .Include(t => t.FinancialGoal)
+            .ToListAsync();
     }
 
     public async Task AddAsync(FinancialGoalTransaction transaction)

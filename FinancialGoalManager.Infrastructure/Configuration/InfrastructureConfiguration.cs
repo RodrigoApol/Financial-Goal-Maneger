@@ -1,7 +1,9 @@
+using System.Collections.Immutable;
 using FiancialGoalManeger.Core.Repositories;
 using FinancialGoalManager.Infrastructure.Persistence;
 using FinancialGoalManager.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace FinancialGoalManager.Infrastructure.Configuration;
@@ -20,7 +22,7 @@ public static class InfrastructureConfiguration
     private static IServiceCollection AddContext(this IServiceCollection services)
     {
         services.AddDbContext<FinancialGoalManagerDbContext>(
-            o => o.UseInMemoryDatabase("FinancialGoalManager"));
+            o => o.UseSqlServer("FinancialGoalManager"));
 
         return services;
     }

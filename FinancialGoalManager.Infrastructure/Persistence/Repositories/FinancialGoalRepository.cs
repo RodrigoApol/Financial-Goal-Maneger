@@ -22,6 +22,7 @@ public class FinancialGoalRepository : IFinancialGoalRepository
     {
         var financialGoal = await _dbContext
             .FinancialsGoals
+            .Include(f => f.Transactions)
             .SingleOrDefaultAsync(f => f.Id == id);
 
         return financialGoal;

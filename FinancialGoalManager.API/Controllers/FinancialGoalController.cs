@@ -29,6 +29,11 @@ public class FinancialGoalController : ControllerBase
     {
         var financialGoal = await _service.GetById(id);
 
+        if (financialGoal is null)
+        {
+            return BadRequest();
+        }
+
         return Ok(financialGoal);
     }
     
