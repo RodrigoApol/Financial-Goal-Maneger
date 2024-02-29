@@ -2,11 +2,13 @@ using System.Text.Json.Serialization;
 using FinancialGoalManager.Application.Configuration;
 using FinancialGoalManager.Infrastructure.Configuration;
 
+AppContext.SetSwitch("System.Globalization.Invariant", false);
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services
-    .AddInfrastructure()
+    .AddInfrastructure(builder.Configuration)
     .AddApplication();
 
 builder.Services
