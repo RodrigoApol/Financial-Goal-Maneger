@@ -1,5 +1,5 @@
-using FiancialGoalManeger.Core.Entities.Base;
 using FiancialGoalManeger.Core.Enums;
+using FinancialGoalManeger.Core.Entities.Base;
 
 namespace FinancialGoalManeger.Core.Entities;
 

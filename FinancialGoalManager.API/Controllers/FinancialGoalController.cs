@@ -1,6 +1,8 @@
 using FinancialGoalManager.Application.Models.InputModels;
 using FinancialGoalManager.Application.Services.Interfaces;
 using FinancialGoalManager.Infrastructure.Persistence;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinancialGoalManager.API.Controllers;
@@ -10,10 +12,12 @@ namespace FinancialGoalManager.API.Controllers;
 public class FinancialGoalController : ControllerBase
 {
     private readonly IFinancialGoalService _service;
+    private readonly IValidator<FinancialGoalInputModel> _validator;
 
-    public FinancialGoalController(IFinancialGoalService service)
+    public FinancialGoalController(IFinancialGoalService service, IValidator<FinancialGoalInputModel> validator)
     {
         _service = service;
+        _validator = validator;
     }
 
     [HttpGet]
@@ -48,6 +52,17 @@ public class FinancialGoalController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Post(FinancialGoalInputModel input)
     {
+        var result = await _validator.ValidateAsync(input);
+
+        if (!result.IsValid)
+        {
+            foreach (var error in result.Errors)
+            {
+                result.AddToModelState(ModelState);   
+            }
+            
+        }
+        
         var financialGoalId = await _service.CreateFinancialGoal(input);
 
         return CreatedAtAction(

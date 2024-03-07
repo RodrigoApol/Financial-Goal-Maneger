@@ -14,7 +14,7 @@ public class FinancialGoalConfiguration : IEntityTypeConfiguration<FinancialGoal
         builder
             .HasMany(f => f.Transactions)
             .WithOne(f => f.FinancialGoal)
-            .HasForeignKey(f => f.FinancialGoal.Id)
+            .HasForeignKey(f => f.IdFinancialGoal)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

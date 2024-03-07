@@ -1,4 +1,4 @@
-namespace FiancialGoalManeger.Core.Entities.Base;
+namespace FinancialGoalManeger.Core.Entities.Base;
 
 public abstract class BaseEntity
 {

@@ -1,5 +1,6 @@
 using FinancialGoalManager.Application.Models.InputModels;
 using FinancialGoalManager.Application.Services.Interfaces;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinancialGoalManager.API.Controllers;
@@ -9,31 +10,36 @@ namespace FinancialGoalManager.API.Controllers;
 public class TransactionController : ControllerBase
 {
     private readonly IFinancialGoalTransactionService _service;
+    private readonly IValidator<FinancialGoalTransactionInputModel> _validator;
 
-    public TransactionController(IFinancialGoalTransactionService service)
+    public TransactionController(IFinancialGoalTransactionService service, IValidator<FinancialGoalTransactionInputModel> validator)
     {
         _service = service;
+        _validator = validator;
     }
 
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        try
-        {
             var transactions = await _service.GetAll();
 
             return Ok(transactions);
-        }
-        catch 
-        {
-            return BadRequest();
-        }
     }
 
     [HttpPost]
-    public async Task<IActionResult> Post(Guid id, FinancialGoalTransactionInputModel inputModel)
+    public async Task<IActionResult> Post(FinancialGoalTransactionInputModel inputModel)
     {
-        await _service.CreateTransaction(id, inputModel);
+        var result = await _validator.ValidateAsync(inputModel);
+
+        if (!result.IsValid)
+        {
+            foreach (var error in result.Errors)
+            {
+                var message = error.ErrorMessage;
+            }
+        }
+        
+        await _service.CreateTransaction(inputModel);
 
         return Created();
     }

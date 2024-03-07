@@ -6,5 +6,5 @@ namespace FinancialGoalManager.Application.Services.Interfaces;
 public interface IFinancialGoalTransactionService
 {
     Task<List<FinancialGoalTransactionViewModel>> GetAll();
-    Task CreateTransaction(Guid idFinancialGoal, FinancialGoalTransactionInputModel inputModel);
+    Task CreateTransaction(FinancialGoalTransactionInputModel inputModel);
 }

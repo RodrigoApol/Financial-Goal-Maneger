@@ -27,9 +27,9 @@ public class FinancialGoalTransactionService : IFinancialGoalTransactionService
         return transactions.ToViewModel();
     }
 
-    public async Task CreateTransaction(Guid idFinancialGoal, FinancialGoalTransactionInputModel inputModel)
+    public async Task CreateTransaction(FinancialGoalTransactionInputModel inputModel)
     {
-        var financialGoal = await _fgRepository.GetByIdAsync(idFinancialGoal);
+        var financialGoal = await _fgRepository.GetByIdAsync(inputModel.IdFinancialGoal);
 
         if (financialGoal is null)
         {
@@ -39,6 +39,7 @@ public class FinancialGoalTransactionService : IFinancialGoalTransactionService
         if (financialGoal.Status == EFinancialGoalStatus.InProgress)
         {
             var transaction = new FinancialGoalTransaction(
+                inputModel.IdFinancialGoal,
                 inputModel.Amount,
                 inputModel.TransactionType);
             
@@ -55,6 +56,8 @@ public class FinancialGoalTransactionService : IFinancialGoalTransactionService
             }
             
             await _repository.AddAsync(transaction);
+            await _fgRepository.SaveChangesAsync();
+            await _repository.SaveChangesAsync();
         }
 
         if (financialGoal.Status is EFinancialGoalStatus.Canceled or EFinancialGoalStatus.Paused
@@ -62,6 +65,5 @@ public class FinancialGoalTransactionService : IFinancialGoalTransactionService
         {
             throw new ArgumentException("Transaction not valid");
         }
-        
     }
 }
